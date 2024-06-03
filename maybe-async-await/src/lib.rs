@@ -5,12 +5,14 @@ use syn::{parse_macro_input, Expr, ItemFn, TraitItemFn};
 #[proc_macro_attribute]
 pub fn maybe_async(_attr: TokenStream, input: TokenStream) -> TokenStream {
     if let Ok(func) = syn::parse::<ItemFn>(input.clone()) {
+        println!("Tokens function: {}", quote!(#func));
         if cfg!(feature = "async") {
             quote!(async #func).into()
         } else {
             quote!(#func).into()
         }
     } else if let Ok(func) = syn::parse::<TraitItemFn>(input.clone()) {
+        println!("Tokens trait function: {}", quote!(#func));
         if cfg!(feature = "async") {
             quote!(async #func).into()
         } else {
