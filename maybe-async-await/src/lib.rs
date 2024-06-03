@@ -1,24 +1,24 @@
 use proc_macro::TokenStream;
 use quote::quote;
-use syn::{parse_macro_input, Expr, Item};
-
-// #[proc_macro_attribute]
-// pub fn print_item(_attr: TokenStream, input: TokenStream) -> TokenStream {
-//     println!("{:?}", input);
-//     input
-// }
+use syn::{parse_macro_input, Expr, ItemFn, TraitItemFn};
 
 #[proc_macro_attribute]
 pub fn maybe_async(_attr: TokenStream, input: TokenStream) -> TokenStream {
-    let item = parse_macro_input!(input as Item);
-
-    let quote = if cfg!(feature = "async") {
-        quote!(async #item)
+    if let Ok(func) = syn::parse::<ItemFn>(input.clone()) {
+        if cfg!(feature = "async") {
+            quote!(async #func).into()
+        } else {
+            quote!(#func).into()
+        }
+    } else if let Ok(func) = syn::parse::<TraitItemFn>(input.clone()) {
+        if cfg!(feature = "async") {
+            quote!(async #func).into()
+        } else {
+            quote!(#func).into()
+        }
     } else {
-        quote!(#item)
-    };
-
-    quote.into()
+        input
+    }
 }
 
 #[proc_macro]

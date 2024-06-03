@@ -1,5 +1,8 @@
 use maybe_async_await::{maybe_async, maybe_await};
 
+#[cfg(feature = "async")]
+use tokio;
+
 trait TestTrait {
     #[maybe_async]
     fn hello(&self);
@@ -24,17 +27,16 @@ impl TestTrait for TestStruct {
 }
 
 #[cfg(feature = "async")]
-use tokio;
-
-#[cfg(feature = "async")]
 #[tokio::main]
 async fn main() {
     let s = TestStruct {};
-    maybe_await!(s.hello());
+    println!("Ran in async.");
+    s.hello().await;
 }
 
 #[cfg(not(feature = "async"))]
 fn main() {
     let s = TestStruct {};
+    println!("Ran in sync.");
     s.hello();
 }
