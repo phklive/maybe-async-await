@@ -4,9 +4,11 @@ use maybe_async_await::{maybe_async, maybe_await};
 use tokio;
 
 trait TestTrait {
+    /// Hello
     #[maybe_async]
     fn hello(&self);
 
+    /// World
     #[maybe_async]
     fn world(&self) -> String;
 }
