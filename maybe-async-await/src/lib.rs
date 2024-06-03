@@ -13,7 +13,7 @@ pub fn maybe_async(_attr: TokenStream, input: TokenStream) -> TokenStream {
                 block,
             } = func;
             quote! {
-                async #vis #sig { #block }
+                #vis async #sig { #block }
             }
             .into()
         } else {
