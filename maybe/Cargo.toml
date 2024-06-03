@@ -1,0 +1,11 @@
+[package]
+name = "maybe"
+version = "0.1.0"
+edition = "2021"
+
+[features]
+async = ["maybe-async-await/async"]
+
+[dependencies]
+maybe-async-await = { path = "../maybe-async-await" }
+tokio = { version = "1", features = ["full"] }

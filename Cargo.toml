@@ -1,0 +1,3 @@
+[workspace]
+members = ["maybe-async-await", "maybe"]
+resolver = "2"
